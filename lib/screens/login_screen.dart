@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:eatsim/screens/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,6 +12,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _idController = TextEditingController();
   final _pwController = TextEditingController();
   bool _isChecked = false;
+
+  void onPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   print("ID: ${_idController.text}, PW: ${_pwController.text}");
                   _idController.clear();
                   _pwController.clear();
+                  onPressed();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xffF8C044),
