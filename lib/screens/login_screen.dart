@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:eatsim/screens/main_screen.dart';
+import '../utils/constants.dart';
+import '../servies/login_service.dart';
+import '../widgets/input_form.dart';
 
+/* 로그인 화면 */
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -9,122 +12,142 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _idController = TextEditingController();
-  final _pwController = TextEditingController();
-  bool _isChecked = false;
+  final loginService = LoginService(); // 로그인 로직 인스턴스
+  final formKey = GlobalKey<FormState>(); // ID, Password 입력 폼의 키
+  final idController = TextEditingController(); // ID 입력 폼의 컨트롤러
+  final passwordController = TextEditingController(); // Password 입력 폼의 컨트롤러
+  bool isChecked = false; // ID, Password 저장 체크박스의 상태
 
-  void onPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _load(); // 로그인 정보 저장되어 있다면 ID, Password 불러오기
+  }
+
+  /* ID, Password를 불러오는 함수 */
+  void _load() async {
+    isChecked = await loginService.loadLoginInfo("isChecked") == "true";
+    if (isChecked) {
+      idController.text = await loginService.loadLoginInfo("id");
+      passwordController.text = await loginService.loadLoginInfo("password");
+    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 230,
-              child: Image.asset("assets/images/logo.png"),
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: 400,
-              child: TextField(
-                style: const TextStyle(color: Colors.white),
-                controller: _idController,
-                decoration: const InputDecoration(
-                  focusColor: Colors.white,
-                  filled: true,
-                  fillColor: Color(0xff464A50),
-                  hintText: 'ID',
-                  hintStyle: TextStyle(color: Color(0xff898989)),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(1)),
-                      borderSide: BorderSide(color: Color(0xff464A50))),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(1)),
-                      borderSide: BorderSide(color: Color(0xff464A50))),
-                ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /* 로고 이미지 */
+              SizedBox(
+                width: 200,
+                child: Image.asset(Constants.logoImage),
               ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: 400,
-              child: TextField(
-                obscureText: true,
-                controller: _pwController,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Color(0xff464A50),
-                  hintText: 'Password',
-                  hintStyle: TextStyle(color: Color(0xff898989)),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(1)),
-                      borderSide: BorderSide(color: Color(0xff464A50))),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(1)),
-                      borderSide: BorderSide(color: Color(0xff464A50))),
-                ),
+              const SizedBox(
+                height: 50,
               ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: 400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                      activeColor: const Color(0xffF8C044),
-                      fillColor: MaterialStateProperty.resolveWith((states) {
-                        if (!states.contains(MaterialState.selected)) {
-                          return Colors.white;
-                        }
-                        return null;
-                      }),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2)),
-                      side: MaterialStateBorderSide.resolveWith(
-                        (states) =>
-                            const BorderSide(width: 1.0, color: Colors.white),
+              /* 로그인 폼 */
+              SizedBox(
+                width: 400,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      /* ID 입력 폼 */
+                      InputForm(
+                        controller: idController,
+                        hintText: "ID",
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return Constants.idErrorMessage;
+                          }
+                          return null;
+                        },
                       ),
-                      value: _isChecked,
-                      onChanged: ((value) {
-                        setState(() => _isChecked = value!);
-                      })),
-                  const SizedBox(width: 5),
-                  const Text(
-                    "Remember me",
-                    style: TextStyle(color: Colors.white),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      /* Password 입력 폼 */
+                      InputForm(
+                        controller: passwordController,
+                        hintText: "Password",
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return Constants.passwordErrorMessage;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          /* ID, Password 저장 체크박스 */
+                          Checkbox(
+                            activeColor: Constants.primaryColor,
+                            fillColor:
+                                MaterialStateProperty.resolveWith((states) {
+                              if (!states.contains(MaterialState.selected)) {
+                                return Colors.white;
+                              }
+                              return null;
+                            }),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2)),
+                            side: MaterialStateBorderSide.resolveWith(
+                              (states) => const BorderSide(
+                                  width: 1.0, color: Colors.white),
+                            ),
+                            value: isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            },
+                          ),
+                          const Text(
+                            "Remember me",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      /* 로그인 버튼 */
+                      SizedBox(
+                        width: 400,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            loginService.handleLogin(context, formKey,
+                                idController, passwordController, isChecked);
+                          },
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: 400,
-              height: 45,
-              child: ElevatedButton(
-                onPressed: () {
-                  print("ID: ${_idController.text}, PW: ${_pwController.text}");
-                  _idController.clear();
-                  _pwController.clear();
-                  onPressed();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffF8C044),
-                ),
-                child: const Text(
-                  "Login",
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
