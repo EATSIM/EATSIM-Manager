@@ -1,5 +1,7 @@
-import 'package:eatsim/screens/login_screen.dart';
+import 'package:eatsim/widgets/hide_keyboard.dart';
 import 'package:flutter/material.dart';
+import 'utils/routes.dart';
+import 'utils/themes.dart';
 
 void main() {
   runApp(const App());
@@ -11,8 +13,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: const Color(0xff313639)),
-      home: const LoginScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: Themes.themeData,
+      builder: (context, child) {
+        return HideKeyboard(child: child!);
+      },
+      initialRoute: Routes.login,
+      routes: routes,
     );
   }
 }
