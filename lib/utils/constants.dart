@@ -13,6 +13,10 @@ class Constants {
   static const appBarButtonColor = Color(0xFF414141);
   static const appBarButtonTextColor = Color(0xFF212121);
 
+  static const unSelectedMenuColor = Color(0xFF898989);
+  static const foodCardColor = Color(0xFF3D4042);
+  static const foodPriceColor = Color(0xFFADADAD);
+
   /* 이미지 */
   static const logoImage = "assets/images/logo.png";
 
