@@ -37,7 +37,7 @@ class LoginService {
       // 비동기 작업이 완료된 후에 메인 화면으로 이동
       Future.delayed(Duration.zero, () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        Navigator.pushNamed(context, Routes.main);
+        Navigator.pushReplacementNamed(context, Routes.main);
       });
     } else {
       // ID, Password 입력 폼에 값이 없는 경우 에러 메시지 출력

@@ -62,7 +62,7 @@ class _MainScreenState extends State<MainScreen>
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             child: TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routes.login);
+                Navigator.pushReplacementNamed(context, Routes.login);
               },
               style: ButtonStyle(
                 side: MaterialStateProperty.all(
