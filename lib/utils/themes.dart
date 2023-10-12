@@ -10,9 +10,24 @@ class Themes {
     ),
     // 배경 색상
     scaffoldBackgroundColor: Constants.backgroundColor,
-    // 앱 바 테마
+    // 앱바 테마
     appBarTheme: const AppBarTheme(
       backgroundColor: Constants.primaryColor,
+    ),
+    // 탭바 테마
+    tabBarTheme: TabBarTheme(
+      indicator: const BoxDecoration(),
+      labelColor: Colors.white,
+      labelStyle: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelColor: Colors.black,
+      unselectedLabelStyle: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
     ),
   );
 }
