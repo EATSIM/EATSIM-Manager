@@ -88,6 +88,7 @@ class _MainScreenState extends State<MainScreen>
       /* 하단 탭바 뷰 */
       body: TabBarView(
         controller: tabController,
+        physics: const NeverScrollableScrollPhysics(), // 스크롤 비활성화
         children: const [
           Center(child: Text("INSTORE")),
           MenuScreen(),
