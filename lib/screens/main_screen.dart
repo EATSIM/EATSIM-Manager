@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'menu_screen.dart';
 import '../utils/constants.dart';
 import '../utils/routes.dart';
 
@@ -89,7 +90,7 @@ class _MainScreenState extends State<MainScreen>
         controller: tabController,
         children: const [
           Center(child: Text("INSTORE")),
-          Center(child: Text("MENU")),
+          MenuScreen(),
           Center(child: Text("REVIEW")),
           Center(child: Text("DATA")),
           Center(child: Text("PROFILE")),
