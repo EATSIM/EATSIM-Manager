@@ -10,6 +10,9 @@ class Constants {
   static const primaryTextColor = Color(0xFF545454);
   static const hintTextColor = Color(0xFF898989);
 
+  static const appBarButtonColor = Color(0xFF414141);
+  static const appBarButtonTextColor = Color(0xFF212121);
+
   /* 이미지 */
   static const logoImage = "assets/images/logo.png";
 
