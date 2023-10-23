@@ -17,6 +17,11 @@ class Constants {
   static const foodCardColor = Color(0xFF3D4042);
   static const foodPriceColor = Color(0xFFADADAD);
 
+  static const menuCategoryAddColor = Color(0xff545454);
+  static const menuCategoryAddTextFiledColor = Color(0xffB4B4B4);
+
+  static const menuEditBackgroundColor = Color(0xff4F4F4F);
+
   /* 이미지 */
   static const logoImage = "assets/images/logo.png";
 
