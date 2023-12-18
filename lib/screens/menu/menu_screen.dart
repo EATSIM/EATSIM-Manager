@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'menu_category_add_dialog.dart';
+import 'menu_edit_dialog.dart';
+import '../../data/restaurant_data.dart';
 import '../../utils/constants.dart';
-import '../../widgets/floating_action_button.dart';
-import '../../widgets/menu_edit_button.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -11,59 +12,18 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  final List<String> menuCategories = ["한식", "중식", "일식"];
-  final Map<String, List<Map<String, dynamic>>> foodItems = {
-    "한식": [
-      {
-        "음식": "김치찌개",
-        "가격": "7,000",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-      {
-        "음식": "된장찌개",
-        "가격": "8,000",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-      {
-        "음식": "불고기",
-        "가격": "8,000",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-    ],
-    "중식": [
-      {
-        "음식": "짜장면",
-        "가격": "6,500",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-      {
-        "음식": "탕수육",
-        "가격": "9,500",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-    ],
-    "일식": [
-      {
-        "음식": "초밥",
-        "가격": "10,000",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-      {
-        "음식": "라멘",
-        "가격": "8,500",
-        "사진":
-            "https://1801889e95b1f9bf.kinxzone.com/webfile/product/7/7273/kl69nl3lk448.jpg",
-      },
-    ],
-  };
+  final List<String> menuCategories = RestaurantData.menuCategories;
+  final Map<String, List<Map<String, dynamic>>> foodItems =
+      RestaurantData.foodItems;
   int selectedMenuIndex = 0;
-  bool floatingActionButton = false;
+
+  final TextEditingController categoryController = TextEditingController();
+
+  void addMenuCategory(String category) {
+    setState(() {
+      RestaurantData.addMenuCategory(category);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,117 +84,8 @@ class _MenuScreenState extends State<MenuScreen> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          final TextEditingController categoryController =
-                              TextEditingController();
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            content: SizedBox(
-                              height: 275,
-                              width: 340,
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerRight,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: Constants.menuCategoryAddColor,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    const SizedBox(
-                                      child: Align(
-                                        alignment: Alignment(-0.6, 0),
-                                        child: Text(
-                                          "메뉴 카테고리",
-                                          style: TextStyle(
-                                            color:
-                                                Constants.menuCategoryAddColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      width: 250,
-                                      height: 35,
-                                      child: TextField(
-                                        controller: categoryController,
-                                        decoration: const InputDecoration(
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                            borderSide: BorderSide(
-                                              color: Constants
-                                                  .menuCategoryAddTextFiledColor,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                            borderSide: BorderSide(
-                                              color: Constants
-                                                  .menuCategoryAddTextFiledColor,
-                                              width: 1,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 60,
-                                    ),
-                                    SizedBox(
-                                      width: 270,
-                                      height: 50,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          elevation: 0,
-                                        ),
-                                        onPressed: () {
-                                          String newCategory =
-                                              categoryController.text;
-                                          if (newCategory.isNotEmpty) {
-                                            setState(() {
-                                              menuCategories.add(newCategory);
-                                            });
-                                            Navigator.of(context).pop();
-                                          }
-                                        },
-                                        child: const Text(
-                                          "저장",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          return MenuCategoryAddDialog(
+                            addMenuCategory: addMenuCategory,
                           );
                         },
                       );
@@ -364,43 +215,36 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         ],
       ),
-      /* 메뉴 편집 버튼 */
-      floatingActionButton: floatingActionButton == false
-          ? Container(
-              margin: const EdgeInsets.only(top: 15),
-              child: FloatingActionBtn(
-                onPressed: () {
-                  setState(() {
-                    floatingActionButton = true;
-                  });
-                },
-              ),
-            )
-          : Container(
-              width: 190,
-              height: 113,
-              margin: const EdgeInsets.only(top: 15),
-              decoration: const BoxDecoration(
-                color: Constants.menuEditBackgroundColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  FloatingActionBtn(
-                    onPressed: () {
-                      setState(() {
-                        floatingActionButton = false;
-                      });
+      /* 메뉴 추가 버튼 */
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(
+          top: 15,
+        ),
+        child: FloatingActionButton.small(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return MenuEditDialog(
+                    categoryController: categoryController,
+                    onSavePressed: () {
+                      String newCategory = categoryController.text;
+                      if (newCategory.isNotEmpty) {
+                        setState(() {
+                          menuCategories.add(newCategory);
+                        });
+                        Navigator.of(context).pop();
+                      }
                     },
-                  ),
-                  const MenuEditButton(title: "메뉴 추가하기"),
-                  const MenuEditButton(title: "메뉴 삭제하기"),
-                ],
-              ),
-            ),
+                  );
+                });
+          },
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
