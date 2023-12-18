@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 /// 화면 터치 시 키보드 숨기기
 class HideKeyboard extends StatelessWidget {
-  const HideKeyboard({Key? key, required this.child}) : super(key: key);
+  const HideKeyboard({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   final Widget child;
 
